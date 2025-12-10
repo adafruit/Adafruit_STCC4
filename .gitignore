@@ -1,0 +1,9 @@
+# Datasheet files
+*.pdf
+*.txt
+
+# Claude configuration
+.claude/
+
+# Output files
+output.txt
