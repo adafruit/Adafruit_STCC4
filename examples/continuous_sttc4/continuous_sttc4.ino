@@ -1,4 +1,4 @@
-// Basic test sketch for Adafruit STTC4 CO2 sensor
+// Continuous measurement example for Adafruit STTC4 CO2 sensor
 
 #include <Adafruit_STTC4.h>
 
