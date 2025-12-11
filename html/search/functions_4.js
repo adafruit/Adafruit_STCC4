@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['getproductid',['getProductID',['../class_adafruit___s_t_t_c4.html#aa89ac9bfdf6f19d8d1d51100d131f851',1,'Adafruit_STTC4']]]
+  ['getproductid',['getProductID',['../class_adafruit___s_t_c_c4.html#a8605a2bbd2618bf2dce5cad6af5ae601',1,'Adafruit_STCC4']]]
 ];

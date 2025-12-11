@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sleepmode',['sleepMode',['../class_adafruit___s_t_t_c4.html#add58bd268410f687cc3f450456f184b8',1,'Adafruit_STTC4']]]
+  ['sleepmode',['sleepMode',['../class_adafruit___s_t_c_c4.html#a8a12177a068acfc886b8863eabf6e326',1,'Adafruit_STCC4']]]
 ];
