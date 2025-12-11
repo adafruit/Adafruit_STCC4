@@ -67,11 +67,11 @@
 #define STTC4_PRODUCT_ID 0x0901018A
 
 /** Status bit flags */
-#define STTC4_STATUS_VOLTAGE_ERROR 0x0001
-#define STTC4_STATUS_DEBUG_MASK 0x000E
-#define STTC4_STATUS_SHT_NOT_CONNECTED 0x0010
-#define STTC4_STATUS_MEMORY_ERROR_MASK 0x0060
-#define STTC4_STATUS_TESTING_MODE 0x4000
+#define STTC4_STATUS_VOLTAGE_ERROR 0x0001     ///< Supply voltage error
+#define STTC4_STATUS_DEBUG_MASK 0x000E        ///< Debug flags mask
+#define STTC4_STATUS_SHT_NOT_CONNECTED 0x0010 ///< SHT sensor not connected
+#define STTC4_STATUS_MEMORY_ERROR_MASK 0x0060 ///< Memory error flags mask
+#define STTC4_STATUS_TESTING_MODE 0x4000      ///< Testing mode active
 
 /*!
  * @brief Class that stores state and functions for interacting with
