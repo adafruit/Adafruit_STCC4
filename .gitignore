@@ -4,6 +4,7 @@
 
 # Claude configuration
 .claude/
+CLAUDE.md
 
 # Output files
 output.txt

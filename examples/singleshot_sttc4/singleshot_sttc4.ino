@@ -1,4 +1,5 @@
-// Basic test sketch for Adafruit STTC4 CO2 sensor
+// Single shot measurement example for Adafruit STTC4 CO2 sensor
+// Uses sleep/wake cycle for power saving
 
 #include <Adafruit_STTC4.h>
 
@@ -45,7 +46,7 @@ void setup() {
   Serial.begin(115200);
   while (!Serial) delay(10);
 
-  Serial.println(F("Adafruit STTC4 test"));
+  Serial.println(F("Adafruit STTC4 Single Shot Test"));
 
   if (!sttc4.begin()) {
     Serial.println(F("Failed to find STTC4 chip"));
@@ -54,25 +55,33 @@ void setup() {
 
   Serial.println(F("STTC4 found!"));
 
-  if (!sttc4.reset()) {
-    Serial.println(F("Failed to reset STTC4"));
-    while (1) delay(10);
-  }
-  Serial.println(F("Reset successful"));
-
-  // Test getProductID function after reset
+  // Test getProductID function
   uint32_t productID = sttc4.getProductID();
   Serial.print(F("Product ID: 0x"));
   Serial.println(productID, HEX);
-
-  if (!sttc4.enableContinuousMeasurement(true)) {
-    Serial.println(F("Failed to start continuous measurement"));
-    while (1) delay(10);
-  }
-  Serial.println(F("Continuous measurement started"));
 }
 
 void loop() {
+  // Wake up from sleep mode
+  Serial.println(F("Waking up sensor..."));
+  if (!sttc4.sleepMode(false)) {
+    Serial.println(F("Failed to wake sensor"));
+    delay(100);
+    return;
+  }
+
+  // Perform single shot measurement
+  Serial.println(F("Starting single shot measurement..."));
+  if (!sttc4.measureSingleShot()) {
+    Serial.println(F("Failed to start single shot measurement"));
+    delay(100);
+    return;
+  }
+
+  // Wait for measurement to complete (500ms per datasheet)
+  delay(500);
+
+  // Read measurement
   uint16_t co2;
   float temperature, humidity;
   uint16_t status;
@@ -90,5 +99,15 @@ void loop() {
     Serial.println(F("Failed to read measurement"));
   }
 
-  delay(1000);
+  // Put sensor to sleep to save power
+  Serial.println(F("Putting sensor to sleep..."));
+  if (!sttc4.sleepMode(true)) {
+    Serial.println(F("Failed to put sensor to sleep"));
+  }
+
+  Serial.println(F("Waiting 10 seconds..."));
+  Serial.println();
+  
+  // Wait 10 seconds before next measurement
+  delay(10000);
 }

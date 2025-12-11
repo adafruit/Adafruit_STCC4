@@ -66,6 +66,13 @@
 /** Expected product ID */
 #define STTC4_PRODUCT_ID 0x0901018A
 
+/** Status bit flags */
+#define STTC4_STATUS_VOLTAGE_ERROR 0x0001
+#define STTC4_STATUS_DEBUG_MASK 0x000E
+#define STTC4_STATUS_SHT_NOT_CONNECTED 0x0010
+#define STTC4_STATUS_MEMORY_ERROR_MASK 0x0060
+#define STTC4_STATUS_TESTING_MODE 0x4000
+
 /*!
  * @brief Class that stores state and functions for interacting with
  * the STTC4 CO2 sensor
@@ -76,10 +83,19 @@ class Adafruit_STTC4 {
   ~Adafruit_STTC4();
 
   bool begin(uint8_t i2c_addr = STTC4_DEFAULT_ADDR, TwoWire* wire = &Wire);
+  bool reset();
+  bool sleepMode(bool enable);
+  bool enableContinuousMeasurement(bool enable);
+  bool measureSingleShot();
+  bool readMeasurement(uint16_t* co2, float* temperature, float* humidity,
+                       uint16_t* status);
+  uint32_t getProductID();
 
  private:
   Adafruit_I2CDevice* i2c_dev;
   uint8_t crc8(const uint8_t* data, uint8_t len);
+  bool writeCommand(uint16_t command);
+  bool readCommand(uint16_t command, uint8_t* data, uint8_t len);
 };
 
 #endif // _ADAFRUIT_STTC4_H

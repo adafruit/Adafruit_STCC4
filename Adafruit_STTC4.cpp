@@ -62,27 +62,11 @@ bool Adafruit_STTC4::begin(uint8_t i2c_addr, TwoWire* wire) {
     return false;
   }
 
-  // Verify product ID
-  uint8_t cmd[2] = {(uint8_t)(STTC4_CMD_GET_PRODUCT_ID >> 8),
-                    (uint8_t)(STTC4_CMD_GET_PRODUCT_ID & 0xFF)};
-  uint8_t data[18]; // 6 x (2 bytes + 1 CRC)
+  // Perform soft reset before detection
+  reset();
 
-  if (!i2c_dev->write_then_read(cmd, 2, data, 18, true)) {
-    return false;
-  }
-
-  // Verify CRC for first two data words (product ID)
-  if (crc8(&data[0], 2) != data[2]) {
-    return false; // CRC mismatch for first word
-  }
-  if (crc8(&data[3], 2) != data[5]) {
-    return false; // CRC mismatch for second word
-  }
-
-  // Extract product ID from first 4 bytes (MSB first, with CRCs at bytes 2, 5)
-  uint32_t product_id = ((uint32_t)data[0] << 24) | ((uint32_t)data[1] << 16) |
-                        ((uint32_t)data[3] << 8) | data[4];
-
+  // Verify product ID using helper function
+  uint32_t product_id = getProductID();
   if (product_id != STTC4_PRODUCT_ID) {
     return false;
   }
@@ -109,4 +93,147 @@ uint8_t Adafruit_STTC4::crc8(const uint8_t* data, uint8_t len) {
     }
   }
   return crc;
+}
+
+/*!
+ * @brief Perform soft reset of the sensor
+ * @return true if reset was successful, false otherwise
+ */
+bool Adafruit_STTC4::reset() {
+  uint8_t reset_addr = 0x00;
+  uint8_t reset_cmd = STTC4_CMD_PERFORM_SOFT_RESET;
+
+  if (!i2c_dev->write(&reset_cmd, 1, true, &reset_addr)) {
+    return false;
+  }
+
+  delay(10); // Wait for reset to complete (10ms per datasheet)
+  return true;
+}
+
+/*!
+ * @brief Enter or exit sleep mode
+ * @param enable true to enter sleep mode, false to exit sleep mode
+ * @return true if operation was successful, false otherwise
+ */
+bool Adafruit_STTC4::sleepMode(bool enable) {
+  if (enable) {
+    // Enter sleep mode
+    if (!writeCommand(STTC4_CMD_ENTER_SLEEP_MODE)) {
+      return false;
+    }
+    delay(1); // Wait for sleep command execution (1ms per datasheet)
+  } else {
+    // Exit sleep mode
+    uint8_t wake_byte = STTC4_CMD_EXIT_SLEEP_MODE;
+    if (!i2c_dev->write(&wake_byte, 1)) {
+      return false;
+    }
+    delay(5); // Wait for wake up (5ms per datasheet)
+  }
+  return true;
+}
+
+/*!
+ * @brief Enable or disable continuous measurement with 1s sampling interval
+ * @param enable true to start continuous measurement, false to stop
+ * @return true if command was sent successfully, false otherwise
+ */
+bool Adafruit_STTC4::enableContinuousMeasurement(bool enable) {
+  if (enable) {
+    return writeCommand(STTC4_CMD_START_CONTINUOUS_MEASUREMENT);
+  } else {
+    return writeCommand(STTC4_CMD_STOP_CONTINUOUS_MEASUREMENT);
+  }
+}
+
+/*!
+ * @brief Perform single shot measurement
+ * @return true if command was sent successfully, false otherwise
+ */
+bool Adafruit_STTC4::measureSingleShot() {
+  return writeCommand(STTC4_CMD_MEASURE_SINGLE_SHOT);
+}
+
+/*!
+ * @brief Write command to sensor
+ * @param command 16-bit command code
+ * @return true if command was sent successfully, false otherwise
+ */
+bool Adafruit_STTC4::writeCommand(uint16_t command) {
+  uint8_t cmd[2] = {(uint8_t)(command >> 8), (uint8_t)(command & 0xFF)};
+  return i2c_dev->write(cmd, 2);
+}
+
+/*!
+ * @brief Read command response with CRC validation
+ * @param command 16-bit command code
+ * @param data Buffer to store response data
+ * @param len Expected response length in bytes
+ * @return true if read successful and CRC valid, false otherwise
+ */
+bool Adafruit_STTC4::readCommand(uint16_t command, uint8_t* data, uint8_t len) {
+  uint8_t cmd[2] = {(uint8_t)(command >> 8), (uint8_t)(command & 0xFF)};
+
+  if (!i2c_dev->write_then_read(cmd, 2, data, len, true)) {
+    return false;
+  }
+
+  // Validate CRC for all data words (every 3 bytes: 2 data + 1 CRC)
+  for (uint8_t i = 0; i < len; i += 3) {
+    if (crc8(&data[i], 2) != data[i + 2]) {
+      return false; // CRC mismatch
+    }
+  }
+
+  return true;
+}
+
+/*!
+ * @brief Read measurement data from sensor
+ * @param co2 Pointer to store CO2 concentration in ppm
+ * @param temperature Pointer to store temperature in degrees C
+ * @param humidity Pointer to store relative humidity in %
+ * @param status Pointer to store sensor status word
+ * @return true if measurement was read successfully, false otherwise
+ */
+bool Adafruit_STTC4::readMeasurement(uint16_t* co2, float* temperature,
+                                     float* humidity, uint16_t* status) {
+  uint8_t data[12]; // 4 x (2 bytes + 1 CRC)
+
+  if (!readCommand(STTC4_CMD_READ_MEASUREMENT, data, 12)) {
+    return false;
+  }
+
+  // Extract data (MSB first)
+  uint16_t co2_raw = (data[0] << 8) | data[1];
+  uint16_t temp_raw = (data[3] << 8) | data[4];
+  uint16_t hum_raw = (data[6] << 8) | data[7];
+  uint16_t status_raw = (data[9] << 8) | data[10];
+
+  // Convert raw values using datasheet formulas
+  *co2 = co2_raw;                                     // CO2 is direct ppm value
+  *temperature = (temp_raw * 175.0 / 65536.0) - 45.0; // Temperature conversion
+  *humidity = (hum_raw * 125.0 / 65536.0) - 6.0;      // Humidity conversion
+  *status = status_raw;
+
+  return true;
+}
+
+/*!
+ * @brief Get the product ID from the sensor
+ * @return 32-bit product ID, or 0 if read failed
+ */
+uint32_t Adafruit_STTC4::getProductID() {
+  uint8_t data[6]; // First 2 words only (2 bytes + CRC each)
+
+  if (!readCommand(STTC4_CMD_GET_PRODUCT_ID, data, 6)) {
+    return 0; // Return 0 on failure
+  }
+
+  // Extract product ID from first 4 bytes (MSB first)
+  uint32_t product_id = ((uint32_t)data[0] << 24) | ((uint32_t)data[1] << 16) |
+                        ((uint32_t)data[3] << 8) | data[4];
+
+  return product_id;
 }
