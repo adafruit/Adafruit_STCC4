@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['sleepmode',['sleepMode',['../class_adafruit___s_t_t_c4.html#add58bd268410f687cc3f450456f184b8',1,'Adafruit_STTC4']]],
   ['sttc4_5fcmd_5fdisable_5ftesting_5fmode',['STTC4_CMD_DISABLE_TESTING_MODE',['../_adafruit___s_t_t_c4_8h.html#a1500e6a744fb2eed7243b0b9bfe3314d',1,'Adafruit_STTC4.h']]],
   ['sttc4_5fcmd_5fenable_5ftesting_5fmode',['STTC4_CMD_ENABLE_TESTING_MODE',['../_adafruit___s_t_t_c4_8h.html#a75bfd0fd08a42471b40e43d861c8fd8a',1,'Adafruit_STTC4.h']]],
   ['sttc4_5fcmd_5fenter_5fsleep_5fmode',['STTC4_CMD_ENTER_SLEEP_MODE',['../_adafruit___s_t_t_c4_8h.html#a441baf5855f7bcbaa5e289215c567eaa',1,'Adafruit_STTC4.h']]],

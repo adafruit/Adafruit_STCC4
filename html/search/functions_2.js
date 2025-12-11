@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7eadafruit_5fsttc4',['~Adafruit_STTC4',['../class_adafruit___s_t_t_c4.html#aa9d6fcf37805c23f5aea6d726bfe62f0',1,'Adafruit_STTC4']]]
+  ['enablecontinuousmeasurement',['enableContinuousMeasurement',['../class_adafruit___s_t_t_c4.html#ace51dda9b04950cfb40afeb09a2b559b',1,'Adafruit_STTC4']]]
 ];

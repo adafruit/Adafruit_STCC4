@@ -116,6 +116,25 @@ Macros</h2></td></tr>
 <tr class="separator:af7d77174d267df6b6ba7f324597b1283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f5fc040ba4d659b1c12092aa877d78f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___s_t_t_c4_8h.html#a8f5fc040ba4d659b1c12092aa877d78f">STTC4_PRODUCT_ID</a>&#160;&#160;&#160;0x0901018A</td></tr>
 <tr class="separator:a8f5fc040ba4d659b1c12092aa877d78f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7df3b939840ded2346c4617fd868774a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___s_t_t_c4_8h.html#a7df3b939840ded2346c4617fd868774a">STTC4_STATUS_VOLTAGE_ERROR</a>&#160;&#160;&#160;0x0001</td></tr>
+<tr class="memdesc:a7df3b939840ded2346c4617fd868774a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supply voltage error.  <a href="#a7df3b939840ded2346c4617fd868774a">More...</a><br /></td></tr>
+<tr class="separator:a7df3b939840ded2346c4617fd868774a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4702916cf51746cb5d4ac4553cc3a425"><td class="memItemLeft" align="right" valign="top"><a id="a4702916cf51746cb5d4ac4553cc3a425"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___s_t_t_c4_8h.html#a4702916cf51746cb5d4ac4553cc3a425">STTC4_STATUS_DEBUG_MASK</a>&#160;&#160;&#160;0x000E</td></tr>
+<tr class="memdesc:a4702916cf51746cb5d4ac4553cc3a425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug flags mask. <br /></td></tr>
+<tr class="separator:a4702916cf51746cb5d4ac4553cc3a425"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6987e1f430fdba1b0c4de3a466404f84"><td class="memItemLeft" align="right" valign="top"><a id="a6987e1f430fdba1b0c4de3a466404f84"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___s_t_t_c4_8h.html#a6987e1f430fdba1b0c4de3a466404f84">STTC4_STATUS_SHT_NOT_CONNECTED</a>&#160;&#160;&#160;0x0010</td></tr>
+<tr class="memdesc:a6987e1f430fdba1b0c4de3a466404f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHT sensor not connected. <br /></td></tr>
+<tr class="separator:a6987e1f430fdba1b0c4de3a466404f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a920860dfd20d82b5460a8b8018d4ea39"><td class="memItemLeft" align="right" valign="top"><a id="a920860dfd20d82b5460a8b8018d4ea39"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___s_t_t_c4_8h.html#a920860dfd20d82b5460a8b8018d4ea39">STTC4_STATUS_MEMORY_ERROR_MASK</a>&#160;&#160;&#160;0x0060</td></tr>
+<tr class="memdesc:a920860dfd20d82b5460a8b8018d4ea39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memory error flags mask. <br /></td></tr>
+<tr class="separator:a920860dfd20d82b5460a8b8018d4ea39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04575e9c3a6682a5fc929d0e0d02c7d"><td class="memItemLeft" align="right" valign="top"><a id="ab04575e9c3a6682a5fc929d0e0d02c7d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___s_t_t_c4_8h.html#ab04575e9c3a6682a5fc929d0e0d02c7d">STTC4_STATUS_TESTING_MODE</a>&#160;&#160;&#160;0x4000</td></tr>
+<tr class="memdesc:ab04575e9c3a6682a5fc929d0e0d02c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Testing mode active. <br /></td></tr>
+<tr class="separator:ab04575e9c3a6682a5fc929d0e0d02c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is the documentation for Adafruit's STTC4 driver for the Arduino platform. It is designed specifically to work with the Adafruit STTC4 breakout: <a href="https://www.adafruit.com/product/xxxx">https://www.adafruit.com/product/xxxx</a></p>
@@ -391,6 +410,23 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Expected product ID </p>
+
+</div>
+</div>
+<a id="a7df3b939840ded2346c4617fd868774a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7df3b939840ded2346c4617fd868774a">&#9670;&nbsp;</a></span>STTC4_STATUS_VOLTAGE_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STTC4_STATUS_VOLTAGE_ERROR&#160;&#160;&#160;0x0001</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Supply voltage error. </p>
+<p>Status bit flags </p>
 
 </div>
 </div>
