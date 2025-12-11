@@ -1,4 +1,7 @@
-# Adafruit STTC4 Library
+# Adafruit STTC4 Library [![Build Status](https://github.com/adafruit/Adafruit_STTC4/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_STTC4/actions)[![Documentation](https://github.com/adafruit/Adafruit_STTC4/workflows/Doxygen/badge.svg)](https://adafruit.github.io/Adafruit_STTC4/html/index.html)
+
+<a href="https://www.adafruit.com/product/xxxx"><img src="assets/board.jpg?raw=true" width="500px"><br/>
+<em>Adafruit STTC4 CO2 Sensor Breakout</em></a>
 
 This is an Arduino library for the Adafruit STTC4 sensor breakout board.
 
