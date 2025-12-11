@@ -65,11 +65,27 @@ void setup() {
   Serial.print(F("Product ID: 0x"));
   Serial.println(productID, HEX);
 
+  // Uncomment to perform factory reset (clears calibration history)
+  // Serial.println(F("Performing factory reset..."));
+  // if (sttc4.factoryReset()) {
+  //   Serial.println(F("Factory reset complete"));
+  // } else {
+  //   Serial.println(F("Factory reset failed"));
+  // }
+
   if (!sttc4.enableContinuousMeasurement(true)) {
     Serial.println(F("Failed to start continuous measurement"));
     while (1) delay(10);
   }
   Serial.println(F("Continuous measurement started"));
+
+  // Uncomment to perform conditioning (takes 22 seconds)
+  // Serial.println(F("Performing conditioning..."));
+  // if (sttc4.performConditioning()) {
+  //   Serial.println(F("Conditioning complete"));
+  // } else {
+  //   Serial.println(F("Conditioning failed"));
+  // }
 }
 
 void loop() {

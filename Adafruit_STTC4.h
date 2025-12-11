@@ -89,6 +89,9 @@ class Adafruit_STTC4 {
   bool measureSingleShot();
   bool readMeasurement(uint16_t* co2, float* temperature, float* humidity,
                        uint16_t* status);
+  bool performConditioning();
+  bool factoryReset();
+  bool performSelfTest(uint16_t* result);
   uint32_t getProductID();
 
  private:

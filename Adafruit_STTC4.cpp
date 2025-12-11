@@ -156,6 +156,59 @@ bool Adafruit_STTC4::measureSingleShot() {
 }
 
 /*!
+ * @brief Perform sensor conditioning to improve initial CO2 sensing performance
+ * @return true if command was sent successfully, false otherwise
+ */
+bool Adafruit_STTC4::performConditioning() {
+  if (!writeCommand(STTC4_CMD_PERFORM_CONDITIONING)) {
+    return false;
+  }
+  delay(22000); // Wait 22 seconds for conditioning to complete
+  return true;
+}
+
+/*!
+ * @brief Perform factory reset to clear FRC and ASC algorithm history
+ * @return true if command was sent successfully, false otherwise
+ */
+bool Adafruit_STTC4::factoryReset() {
+  if (!writeCommand(STTC4_CMD_PERFORM_FACTORY_RESET)) {
+    return false;
+  }
+  delay(90); // Wait 90ms for factory reset to complete
+  return true;
+}
+
+/*!
+ * @brief Perform sensor self-test
+ * @param result Pointer to store self-test result
+ * @return true if self-test was performed successfully, false otherwise
+ */
+bool Adafruit_STTC4::performSelfTest(uint16_t* result) {
+  uint8_t cmd[2] = {(uint8_t)(STTC4_CMD_PERFORM_SELF_TEST >> 8),
+                    (uint8_t)(STTC4_CMD_PERFORM_SELF_TEST & 0xFF)};
+  uint8_t data[3]; // 2 bytes + 1 CRC
+
+  if (!i2c_dev->write(cmd, 2)) {
+    return false;
+  }
+
+  delay(360); // Wait for self test to complete (360ms per datasheet)
+
+  if (!i2c_dev->read(data, 3)) {
+    return false;
+  }
+
+  // Verify CRC
+  if (crc8(&data[0], 2) != data[2]) {
+    return false;
+  }
+
+  *result = (data[0] << 8) | data[1];
+  return true;
+}
+
+/*!
  * @brief Write command to sensor
  * @param command 16-bit command code
  * @return true if command was sent successfully, false otherwise
